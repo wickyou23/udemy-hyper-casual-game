@@ -17,7 +17,8 @@ public class ChunkManager : MonoBehaviour
 
 
     [Header("Elements")]
-    [SerializeField] private Chunk[] chunksPrefabs;
+    // [SerializeField] private Chunk[] chunksPrefabs;
+    [SerializeField] private LevelSO[] levelSO;
     [SerializeField] private Chunk finishChunk;
     [SerializeField] private Chunk startChunk;
 
@@ -26,6 +27,33 @@ public class ChunkManager : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        GenerateChunkByLevel();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public float GetFinhisLineZ()
+    {
+        return finishChunkInstance.transform.localPosition.z;
+    }
+
+    public int GetLevel()
+    {
+        return PlayerPrefs.GetInt("Level", 0);
+    }
+
+    private void GenerateChunkByLevel()
+    {
+        int currentLevel = GetLevel() % levelSO.Length;
+        GenerateChunk(levelSO[currentLevel].chunks);
+    }
+
+    private void GenerateChunk(Chunk[] chunksPrefabs)
     {
         Vector3 initPosition = Vector3.zero;
 
@@ -42,16 +70,5 @@ public class ChunkManager : MonoBehaviour
 
         initPosition.z += finishChunk.GetLength() / 2;
         finishChunkInstance = Instantiate(finishChunk, initPosition, Quaternion.identity, transform);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public float GetFinhisLineZ()
-    {
-        return finishChunkInstance.transform.localPosition.z;
     }
 }

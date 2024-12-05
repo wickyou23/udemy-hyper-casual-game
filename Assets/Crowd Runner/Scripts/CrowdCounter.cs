@@ -17,5 +17,11 @@ public class CrowdCounter : MonoBehaviour
     void Update()
     {
         textMeshPro.text = runners.childCount.ToString();
+
+        if (runners.childCount == 0)
+        {
+            GameManager.Instance.ChangeGameState(GameManager.GameState.GameOver);
+            Destroy(transform.gameObject);
+        }
     }
 }

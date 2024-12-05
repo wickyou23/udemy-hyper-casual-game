@@ -36,6 +36,11 @@ public class PlayerController : MonoBehaviour
         GameManager.OnGameStateChanged += OnGameStateChanged;
     }
 
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= OnGameStateChanged;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -75,11 +80,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnGameStateChanged(GameManager.GameState current)
     {
-        if (current == GameManager.GameState.Game)
+        switch (current)
         {
-            canMove = true;
-
-            playerAnimator.Run();
+            case GameManager.GameState.GameOver:
+            case GameManager.GameState.LevelCompleted:
+                canMove = false;
+                playerAnimator.Idle();
+                break;
+            case GameManager.GameState.Game:
+                canMove = true;
+                playerAnimator.Run();
+                break;
+            default:
+                break;
         }
     }
 }

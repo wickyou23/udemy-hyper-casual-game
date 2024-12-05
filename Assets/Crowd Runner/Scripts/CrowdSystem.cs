@@ -7,6 +7,7 @@ public class CrowdSystem : MonoBehaviour
     [Header("Elements")]
     [SerializeField] private Transform parentRunner;
     [SerializeField] private GameObject runnerPrefab;
+    [SerializeField] private PlayerAnimator playerAnimator;
 
     [Header("Settings")]
     [SerializeField] private float radius;
@@ -74,9 +75,10 @@ public class CrowdSystem : MonoBehaviour
     {
         for (int i = 0; i < bonusAmount; i++)
         {
-            GameObject gameObject = Instantiate(runnerPrefab, parentRunner);
-            gameObject.GetComponent<Animator>().Play("Run");
+            Instantiate(runnerPrefab, parentRunner);
         }
+
+        playerAnimator.Run();
     }
 
     private void RemoveRunner(int bonusAmount)

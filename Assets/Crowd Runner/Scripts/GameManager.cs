@@ -1,14 +1,18 @@
 using System;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public static Action<GameState> OnGameStateChanged;
 
-    public enum GameState { Menu, Game, LevelEnd, GameOver }
+    public enum GameState { Menu, Game, LevelCompleted, GameOver }
 
     private GameState currentGameState;
+
+    public bool isGameState => currentGameState == GameState.Game;
 
     private void Awake()
     {
@@ -38,5 +42,16 @@ public class GameManager : MonoBehaviour
     {
         currentGameState = gameState;
         OnGameStateChanged?.Invoke(currentGameState);
+    }
+
+    public void ResetGame()
+    {
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene(0);
+    }
+
+    public void ReloadGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
